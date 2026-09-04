@@ -27,11 +27,12 @@
         
         <header class="card-header">
             <h1>⛏️ Typing Game</h1>
-            <p class="instruction">Type the displayed text! (Case-sensitive)</p>
+            <p class="instruction">대소문자를 구분하여 글자를 입력해봅시다! </p>
         </header>
 
         <!-- 타겟 문자 표시창 -->
         <section class="target-slot">
+            <span id="targetType" class="target-type">문자를 확인하세요</span>
             <div id="targetChar" class="target-char">?</div>
             <span class="slot-label">TARGET</span>
         </section>
@@ -42,7 +43,7 @@
                 <span class="mc-icon">💎</span>
                 <div class="box-text">
                     Score:<br>
-                    <span><span>0</span> / 100</span>
+                    <span><span>0</span></span>
                 </div>
             </div>
             <div id="timer" class="mc-box">
@@ -50,6 +51,13 @@
                 <div class="box-text">
                     Time:<br>
                     <span><span>20</span>sec</span>
+                </div>
+            </div>
+            <div id="highScore" class="mc-box high-score-box">
+                <span class="mc-icon">🏆</span>
+                <div class="box-text">
+                    Best:<br>
+                    <span><span>0</span></span>
                 </div>
             </div>
         </section>
@@ -63,5 +71,6 @@
         <!-- 모바일 키보드 활성화용 숨김 입력창 -->
         <input type="text" id="mobileInput" style="opacity: 0; position: absolute; pointer-events: none;" />
     </main>
+    <div id="scoreNotification" class="score-notification" role="status" aria-live="polite"></div>
 </body>
 </html>
