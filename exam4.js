@@ -2,22 +2,27 @@ let score = 0;
 let timeLeft = 20;
 let gameInterval = null;
 let isGameRunning = false;
+let highScore = Number(localStorage.getItem('typingGameHighScore')) || 0;
 
 // DOM 요소 변수 선언
-let targetSlot, targetCharElement, scoreSpan, timerSpan, startButton, resetButton, mobileInput;
+let targetSlot, targetCharElement, targetTypeElement, scoreSpan, timerSpan, highScoreSpan, scoreNotification, startButton, resetButton, mobileInput;
 
 // HTML 로드가 완료된 후 DOM 요소 연결
 document.addEventListener('DOMContentLoaded', () => {
     targetSlot = document.querySelector('.target-slot');
     targetCharElement = document.getElementById('targetChar');
+    targetTypeElement = document.getElementById('targetType');
     scoreSpan = document.querySelector('#score span span');
     timerSpan = document.querySelector('#timer span span');
+    highScoreSpan = document.querySelector('#highScore span span');
+    scoreNotification = document.getElementById('scoreNotification');
     startButton = document.getElementById('startButton');
     resetButton = document.getElementById('resetButton');
     mobileInput = document.getElementById('mobileInput');
 
     if (startButton) startButton.addEventListener('click', startGame);
     if (resetButton) resetButton.addEventListener('click', resetGame);
+    updateHighScore();
 });
 
 // 오디오 엔진
@@ -90,7 +95,25 @@ function getRandomChar() {
 }
 
 function setNewTargetChar() {
-    if (targetCharElement) targetCharElement.innerText = getRandomChar();
+    const newChar = getRandomChar();
+    if (targetCharElement) targetCharElement.innerText = newChar;
+    if (targetTypeElement) {
+        targetTypeElement.innerText = /[A-Z]/.test(newChar) ? '대문자 (A-Z)' : /[a-z]/.test(newChar) ? '소문자 (a-z)' : '숫자 (0-9)';
+    }
+}
+
+function updateHighScore() {
+    if (highScoreSpan) highScoreSpan.innerText = highScore;
+}
+
+function showScoreNotification(points) {
+    if (!scoreNotification) return;
+    scoreNotification.innerText = `${points > 0 ? '+' : ''}${points}점`;
+    scoreNotification.className = `score-notification ${points > 0 ? 'positive' : points < 0 ? 'negative' : 'neutral'}`;
+    clearTimeout(showScoreNotification.timeoutId);
+    showScoreNotification.timeoutId = setTimeout(() => {
+        scoreNotification.className = 'score-notification';
+    }, 900);
 }
 
 function triggerFeedback(isCorrect) {
@@ -125,22 +148,27 @@ function checkInput(event) {
     const inputChar = event.key;
     const targetChar = targetCharElement ? targetCharElement.innerText : '';
 
+    let points;
     if (inputChar === targetChar) {
-        score += 10;
+        points = 10;
         triggerFeedback(true);
+    } else if (/[A-Za-z]/.test(targetChar) && inputChar.toLowerCase() === targetChar.toLowerCase()) {
+        points = 0;
+        triggerFeedback(false);
     } else {
-        score -= 5;
+        points = -10;
         triggerFeedback(false);
     }
 
-    score = Math.max(0, Math.min(100, score));
+    score = Math.max(0, score + points);
     if (scoreSpan) scoreSpan.innerText = score;
-
-    if (score >= 100) {
-        endGame(true);
-    } else {
-        setNewTargetChar();
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('typingGameHighScore', highScore);
+        updateHighScore();
     }
+    showScoreNotification(points);
+    setNewTargetChar();
 }
 
 function updateTimer() {
@@ -152,20 +180,14 @@ function updateTimer() {
     }
 }
 
-function endGame(isWin) {
+function endGame() {
     clearInterval(gameInterval);
     isGameRunning = false;
     document.removeEventListener('keydown', checkInput);
     if (startButton) startButton.disabled = false;
 
-    if (isWin) {
-        if (targetCharElement) targetCharElement.innerText = 'CLEAR!';
-        playMcSound('win');
-        setTimeout(() => alert('🎉 Game Clear!'), 50);
-    } else {
-        if (targetCharElement) targetCharElement.innerText = 'END';
-        setTimeout(() => alert(`⏰ Time Out! Score: ${score}`), 50);
-    }
+    if (targetCharElement) targetCharElement.innerText = 'END';
+    setTimeout(() => alert(`⏰ Time Out! Score: ${score}`), 50);
 }
 
 function startGame() {
@@ -204,6 +226,7 @@ function resetGame() {
     if (scoreSpan) scoreSpan.innerText = '0';
     if (timerSpan) timerSpan.innerText = '20';
     if (targetCharElement) targetCharElement.innerText = '?';
+    if (targetTypeElement) targetTypeElement.innerText = '문자를 확인하세요';
     if (startButton) startButton.disabled = false;
 
     document.removeEventListener('keydown', checkInput);
