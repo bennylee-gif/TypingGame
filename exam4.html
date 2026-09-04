@@ -1,0 +1,67 @@
+<!-- 
+    1. 아래 게임의 문제점을 발견하고,
+   개선점을 제시하세요. 정답은 없습니다. 
+    2. 디자인을 개선해보세요.
+    3. css, javascript 파일을 외부로 빼서 따로 관리하도록 변경해주시고
+    4. repository를 새로 만들어서
+    5. github 페이지에 배포해보세요
+    (index.html이 아니면 파일명까지 다 적어줘야 경로가 됩니다.)
+ -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Typing Game</title>
+    <link rel="stylesheet" href="exam4.css">
+    <script src="exam4.js" defer></script>
+</head>
+<body>
+    <!-- 배경 요소를 위한 레이어 -->
+    <div class="sun"></div>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+
+    <!-- 메인 게임 카드 -->
+    <main class="game-card">
+        
+        <header class="card-header">
+            <h1>⛏️ Typing Game</h1>
+            <p class="instruction">Type the displayed text! (Case-sensitive)</p>
+        </header>
+
+        <!-- 타겟 문자 표시창 -->
+        <section class="target-slot">
+            <div id="targetChar" class="target-char">?</div>
+            <span class="slot-label">TARGET</span>
+        </section>
+
+        <!-- 점수 및 타이머 (2줄 정렬 반영) -->
+        <section class="status-container">
+            <div id="score" class="mc-box">
+                <span class="mc-icon">💎</span>
+                <div class="box-text">
+                    Score:<br>
+                    <span><span>0</span> / 100</span>
+                </div>
+            </div>
+            <div id="timer" class="mc-box">
+                <span class="mc-icon">⏳</span>
+                <div class="box-text">
+                    Time:<br>
+                    <span><span>20</span>sec</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 컨트롤 버튼 -->
+        <nav class="button-group">
+            <button id="startButton" class="mc-btn mc-btn-green">GAME START</button>
+            <button id="resetButton" class="mc-btn mc-btn-red">RESET</button>
+        </nav>
+
+        <!-- 모바일 키보드 활성화용 숨김 입력창 -->
+        <input type="text" id="mobileInput" style="opacity: 0; position: absolute; pointer-events: none;" />
+    </main>
+</body>
+</html>

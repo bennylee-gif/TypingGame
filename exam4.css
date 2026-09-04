@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', monospace;
+    image-rendering: pixelated;
+}
+
+body {
+    background-color: #5c89e6;
+    background-image: linear-gradient(to bottom, #4a75d4 0%, #709cf0 60%, #87adfc 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 배경 오브젝트 */
+.sun {
+    position: absolute;
+    top: 40px;
+    right: 80px;
+    width: 70px;
+    height: 70px;
+    background-color: #ffffa0;
+    border: 4px solid #ffffff;
+    box-shadow: 0 0 0 4px #e0e070, 0 0 20px rgba(255, 255, 160, 0.8);
+}
+
+.cloud {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 4px solid #ffffff;
+    box-shadow: 0 8px 0 rgba(180, 200, 220, 0.6);
+}
+
+.cloud1 { top: 100px; left: 10%; width: 180px; height: 40px; }
+.cloud2 { top: 160px; right: 15%; width: 240px; height: 50px; }
+
+body::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: #5b8731;
+    border-top: 8px solid #3c5e1f;
+    box-shadow: inset 0 -20px 0 #866043;
+}
+
+/* 메인 GUI 컨테이너 */
+.game-card {
+    background-color: #c6c6c6;
+    width: 460px; /* 폰트 폭을 고려해 폭 확장 */
+    padding: 24px;
+    position: relative;
+    z-index: 10;
+    border: 4px solid #000000;
+    box-shadow: inset 4px 4px 0px #ffffff, inset -4px -4px 0px #555555, 0 12px 0px rgba(0, 0, 0, 0.35);
+    text-align: center;
+}
+
+/* 1. 메인 타이틀: 외곽선 제거, 단색 픽셀 그림자만 유지 */
+.card-header h1 {
+    font-size: 1.25rem;
+    color: #00a2ff;
+    text-shadow: 3px 3px 0px #000000; /* 깔끔한 도트 그림자 */
+    margin-bottom: 14px;
+    line-height: 1.4;
+}
+
+/* 2. 안내문구: 가독성을 위해 폰트 사이즈 조정 및 단순화 */
+.instruction {
+    font-size: 0.55rem;
+    line-height: 1.6;
+    color: #ffffff;
+    background: #222222;
+    padding: 10px 8px;
+    border: 3px solid #000000;
+    margin-bottom: 20px;
+}
+
+/* 3. 타겟 문자: 내부 공간을 확보해 뚜렷하게 보이도록 조정 */
+.target-slot {
+    background-color: #8b8b8b;
+    border: 4px solid #373737;
+    box-shadow: inset 4px 4px 0px #373737, inset -4px -4px 0px #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.target-char {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #ff2a6d;
+    text-shadow: 4px 4px 0px #000000;
+    height: 90px;
+    line-height: 90px;
+    user-select: none;
+}
+
+.slot-label {
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    font-size: 0.5rem;
+    color: #373737;
+}
+
+/* 피드백 애니메이션 */
+.target-slot.correct {
+    background-color: #2e6f40;
+    box-shadow: inset 4px 4px 0px #1e4a2b, inset -4px -4px 0px #5cdb7d;
+}
+.target-slot.correct .target-char { color: #5eff8b; }
+
+.target-slot.wrong {
+    background-color: #8f2d2d;
+    box-shadow: inset 4px 4px 0px #5c1b1b, inset -4px -4px 0px #e05e5e;
+    animation: shake 0.2s ease-in-out;
+}
+.target-slot.wrong .target-char { color: #ff6b6b; }
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+/* 4. 점수 / 타이머 박스: 텍스트 겹침 방지 */
+.status-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.mc-box {
+    flex: 1;
+    background-color: #8b8b8b;
+    padding: 12px 6px;
+    font-size: 0.6rem;
+    color: #ffffff;
+    text-shadow: 1px 1px 0px #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 3px solid #373737;
+    box-shadow: inset 3px 3px 0px #373737, inset -3px -3px 0px #ffffff;
+}
+
+.mc-box .box-text {
+    text-align: center;
+    line-height: 1.5;
+}
+
+.mc-box span span {
+    color: #ffff55;
+}
+
+/* 5. 버튼: 글자가 버튼 밖으로 넘치지 않게 크기 조절 */
+.button-group {
+    display: flex;
+    gap: 12px;
+}
+
+.mc-btn {
+    flex: 1;
+    padding: 12px 4px;
+    font-size: 0.7rem;
+    color: #ffffff;
+    text-shadow: 2px 2px 0px #000000;
+    cursor: pointer;
+    border: 3px solid #000000;
+    outline: none;
+}
+
+.mc-btn-green {
+    background-color: #4a7c29;
+    box-shadow: inset 3px 3px 0px #70ab43, inset -3px -3px 0px #274515;
+}
+.mc-btn-green:hover { background-color: #5b9634; color: #ffffa0; }
+
+.mc-btn-red {
+    background-color: #8f2d2d;
+    box-shadow: inset 3px 3px 0px #b84d4d, inset -3px -3px 0px #541616;
+}
+.mc-btn-red:hover { background-color: #aa3838; color: #ffffa0; }
+
+.mc-btn:active { transform: translateY(2px); }
+.mc-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(80%); }
