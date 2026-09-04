@@ -1,6 +1,7 @@
 let score = 0;
 let timeLeft = 20;
 let gameInterval = null;
+let countdownInterval = null; // 카운트다운 타이머 변수 추가
 let isGameRunning = false;
 
 // DOM 요소 변수 선언
@@ -107,7 +108,6 @@ function triggerFeedback(isCorrect) {
 function checkInput(event) {
     if (!isGameRunning || event.isComposing) return;
 
-    // 예외 처리할 제어키 및 특수키 리스트
     const ignoredKeys = [
         ' ', 'Enter', 'Tab', 'Escape', 
         'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
@@ -119,7 +119,6 @@ function checkInput(event) {
         return;
     }
 
-    // 길이가 1이 아닌 입력(기능키 등) 무시
     if (event.key.length !== 1) return;
 
     const inputChar = event.key;
@@ -154,6 +153,7 @@ function updateTimer() {
 
 function endGame(isWin) {
     clearInterval(gameInterval);
+    clearInterval(countdownInterval);
     isGameRunning = false;
     document.removeEventListener('keydown', checkInput);
     if (startButton) startButton.disabled = false;
@@ -168,21 +168,43 @@ function endGame(isWin) {
     }
 }
 
+// 1. START 버튼 클릭 시 3·2·1 GO! 카운트다운 실행
 function startGame() {
     initAudio();
     playMcSound('click');
 
-    if (isGameRunning) return;
+    if (isGameRunning || countdownInterval) return;
 
-    if (startButton) startButton.blur();
+    if (startButton) {
+        startButton.blur();
+        startButton.disabled = true;
+    }
 
+    let count = 3;
+    if (targetCharElement) targetCharElement.innerText = count;
+
+    countdownInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+            if (targetCharElement) targetCharElement.innerText = count;
+        } else if (count === 0) {
+            if (targetCharElement) targetCharElement.innerText = 'GO!';
+        } else {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+            runActualGame(); // 카운트다운 종료 후 본 게임 시작
+        }
+    }, 1000);
+}
+
+// 2. 카운트다운 완료 후 호출되는 실제 게임 실행 함수
+function runActualGame() {
     isGameRunning = true;
     score = 0;
     timeLeft = 20;
 
     if (scoreSpan) scoreSpan.innerText = score;
     if (timerSpan) timerSpan.innerText = timeLeft;
-    if (startButton) startButton.disabled = true;
 
     setNewTargetChar();
     gameInterval = setInterval(updateTimer, 1000);
@@ -191,12 +213,16 @@ function startGame() {
     if (mobileInput) mobileInput.focus();
 }
 
+// 3. 리셋 버튼 클릭 시 진행 중인 카운트다운도 함께 초기화
 function resetGame() {
     initAudio();
     playMcSound('click');
     if (resetButton) resetButton.blur();
 
     clearInterval(gameInterval);
+    clearInterval(countdownInterval);
+    countdownInterval = null;
+    
     isGameRunning = false;
     score = 0;
     timeLeft = 20;
