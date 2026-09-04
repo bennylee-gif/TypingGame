@@ -1,198 +1,199 @@
+/* 구글 폰트 라이브러리에서 레트로 픽셀 스타일 폰트('Press Start 2P')를 로드합니다. */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Press Start 2P', monospace;
-    image-rendering: pixelated;
+/* [수정 포인트] 가상 요소(::before, ::after)까지 리셋 범위를 확장하여 의도치 않은 여백이나 크기 왜곡을 방지했습니다. */
+*,
+*::before,
+*::after {
+    box-sizing: border-box; /* 패딩과 테두리를 전체 너비/높이에 포함시킵니다. */
+    margin: 0; /* 기본 바깥 여백을 제거합니다. */
+    padding: 0; /* 기본 안쪽 여백을 제거합니다. */
+    font-family: 'Press Start 2P', monospace; /* 레트로 픽셀 글꼴을 전역 적용합니다. */
+    image-rendering: pixelated; /* 크롬/사파리 등에서 픽셀 그래픽이 뭉개지지 않고 선명하게 보이도록 설정합니다. */
+    image-rendering: crisp-edges; /* [수정 포인트] 파이어폭스 등 타 브라우저 호환성을 위해 픽셀 선명도 옵션을 추가했습니다. */
 }
 
+/* 화면 전체 배경 및 중앙 정렬 레이아웃 설정 */
 body {
-    background-color: #5c89e6;
-    background-image: linear-gradient(to bottom, #4a75d4 0%, #709cf0 60%, #87adfc 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
-    position: relative;
+    background-color: #5c89e6; /* 바탕 배경색으로 푸른색을 지정합니다. */
+    background-image: linear-gradient(to bottom, #4a75d4 0%, #709cf0 60%, #87adfc 100%); /* 수직 하늘 그라데이션을 적용합니다. */
+    display: flex; /* 부모의 크기가 바뀌어도 자식은 항상 중앙에 위치 */
+    justify-content: center; /* 가로 기준 중앙 정렬합니다. */
+    align-items: center; /* 세로 기준 중앙 정렬합니다. */
+    min-height: 100vh; /* 브라우저 화면 전체 높이를 최소 높이로 지정합니다. */
+    overflow: hidden; /* 화면 밖 요소로 인한 스크롤바 생성을 방지합니다. */
+    position: relative; /* 배경 오브젝트들의 절대 위치 배치 기준점으로 설정합니다. */
 }
 
-/* 배경 오브젝트 */
+/* [수정 포인트] 코드 가독성을 높이기 위해 배경 요소를 영역별로 주석 그룹화했습니다. */
+/* 픽셀 배경 오브젝트 (태양, 구름, 바닥 지면) */
 .sun {
-    position: absolute;
-    top: 40px;
-    right: 80px;
-    width: 70px;
-    height: 70px;
-    background-color: #ffffa0;
-    border: 4px solid #ffffff;
-    box-shadow: 0 0 0 4px #e0e070, 0 0 20px rgba(255, 255, 160, 0.8);
+    position: absolute; /* body 기준 절대 위치로 배치합니다. */
+    top: 40px; /* 상단에서 40px 배치합니다. */
+    right: 80px; /* 우측에서 80px 배치합니다. */
+    width: 70px; /* 가로 너비 70px 지정 */
+    height: 70px; /* 세로 높이 70px 지정 */
+    background-color: #ffffa0; /* 연노랑 태양 색상 */
+    border: 4px solid #ffffff; /* 4px 흰색 외곽선 */
+    box-shadow: 0 0 0 4px #e0e070, 0 0 20px rgba(255, 255, 160, 0.8); /* 이중 픽셀 테두리 및 빛나는 발광 효과를 부여합니다. */
 }
 
 .cloud {
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0.85);
-    border: 4px solid #ffffff;
-    box-shadow: 0 8px 0 rgba(180, 200, 220, 0.6);
+    position: absolute; /* 자유 배치를 위한 absolute 설정 */
+    background-color: rgba(255, 255, 255, 0.85); /* 85% 불투명 흰색 배경 */
+    border: 4px solid #ffffff; /* 흰색 테두리 지정 */
+    box-shadow: 0 8px 0 rgba(180, 200, 220, 0.6); /* 구름 하단의 각진 픽셀 입체 그림자를 연출합니다. */
 }
 
-.cloud1 { top: 100px; left: 10%; width: 180px; height: 40px; }
-.cloud2 { top: 160px; right: 15%; width: 240px; height: 50px; }
+.cloud1 { top: 100px; left: 10%; width: 180px; height: 40px; } /* 첫 번째 구름 위치 및 크기 */
+.cloud2 { top: 160px; right: 15%; width: 240px; height: 50px; } /* 두 번째 구름 위치 및 크기 */
 
 body::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    background: #5b8731;
-    border-top: 8px solid #3c5e1f;
-    box-shadow: inset 0 -20px 0 #866043;
+    content: ''; /* 의소 요소를 생성합니다. */
+    position: absolute; /* 화면 바닥에 고정 배치합니다. */
+    bottom: 0; /* 화면 최하단 밀착 */
+    left: 0; /* 화면 최좌측 밀착 */
+    width: 100%; /* 화면 전체 너비 */
+    height: 60px; /* 높이 60px 지정 */
+    background: #5b8731; /* 녹색 잔디 필드 색상 */
+    border-top: 8px solid #3c5e1f; /* 잔디 상단 경계선 */
+    box-shadow: inset 0 -20px 0 #866043; /* 바닥 내부 하단에 흙을 표현하는 갈색 입체 띠 연출 */
 }
 
 /* 메인 GUI 컨테이너 */
 .game-card {
-    background-color: #c6c6c6;
-    width: 460px; /* 폰트 폭을 고려해 폭 확장 */
-    padding: 24px;
-    position: relative;
-    z-index: 10;
-    border: 4px solid #000000;
-    box-shadow: inset 4px 4px 0px #ffffff, inset -4px -4px 0px #555555, 0 12px 0px rgba(0, 0, 0, 0.35);
-    text-align: center;
+    background-color: #c6c6c6; /* 클래식 게임기 회색 바탕색 */
+    width: 460px; /* 너비 460px 고정 */
+    padding: 24px; /* 내부 안쪽 여백 24px */
+    position: relative; /* 레이아웃 기준점 설정 */
+    z-index: 10; /* 배경보다 앞 레이어에 노출시킵니다. */
+    border: 4px solid #000000; /* 검은색 외곽선 */
+    box-shadow: inset 4px 4px 0px #ffffff, inset -4px -4px 0px #555555, 0 12px 0px rgba(0, 0, 0, 0.35); /* 픽셀 양각 입체감과 그림자를 표현합니다. */
+    text-align: center; /* 내부 요소 중앙 정렬 */
 }
 
-/* 1. 메인 타이틀: 외곽선 제거, 단색 픽셀 그림자만 유지 */
+/* 타이틀 및 안내문구 */
 .card-header h1 {
-    font-size: 1.25rem;
-    color: #00a2ff;
-    text-shadow: 3px 3px 0px #000000; /* 깔끔한 도트 그림자 */
-    margin-bottom: 14px;
-    line-height: 1.4;
+    font-size: 1.25rem; /* 폰트 크기 설정 */
+    color: #00a2ff; /* 파란색 메인 텍스트 */
+    text-shadow: 3px 3px 0px #000000; /* 3px 픽셀 그림자 */
+    margin-bottom: 14px; /* 하단 여백 14px */
+    line-height: 1.4; /* 줄 간격 지정 */
 }
 
-/* 2. 안내문구: 가독성을 위해 폰트 사이즈 조정 및 단순화 */
 .instruction {
-    font-size: 0.55rem;
-    line-height: 1.6;
-    color: #ffffff;
-    background: #222222;
-    padding: 10px 8px;
-    border: 3px solid #000000;
-    margin-bottom: 20px;
+    font-size: 0.55rem; /* 소형 안내 문구 폰트 크기 */
+    line-height: 1.6; /* 가독성을 위한 줄 간격 확장 */
+    color: #ffffff; /* 흰색 글자 */
+    background: #222222; /* 검은색 박스 배경 */
+    padding: 10px 8px; /* 안쪽 여백 설정 */
+    border: 3px solid #000000; /* 3px 검은색 테두리 */
+    margin-bottom: 20px; /* 하단 간격 20px */
 }
 
-/* 3. 타겟 문자: 내부 공간을 확보해 뚜렷하게 보이도록 조정 */
+/* 타겟 문자 표시 슬롯 */
 .target-slot {
-    background-color: #8b8b8b;
-    border: 4px solid #373737;
-    box-shadow: inset 4px 4px 0px #373737, inset -4px -4px 0px #ffffff;
-    padding: 20px;
-    margin-bottom: 20px;
-    position: relative;
+    background-color: #8b8b8b; /* 회색 슬롯 바탕 */
+    border: 4px solid #373737; /* 진회색 외곽선 */
+    box-shadow: inset 4px 4px 0px #373737, inset -4px -4px 0px #ffffff; /* 음각으로 움푹 파인 픽셀 효과 */
+    padding: 20px; /* 안쪽 여백 20px */
+    margin-bottom: 20px; /* 하단 여백 20px */
+    position: relative; /* 내부 라벨 absolute 배치를 위한 기준점 */
+    /* [수정 포인트] transition 속성을 제거하여 상태 전환 시 부드럽게 뭉개지지 않고 즉각 픽셀로 변하도록 유지했습니다. */
 }
 
 .target-char {
-    font-size: 3.5rem;
-    font-weight: bold;
-    color: #ff2a6d;
-    text-shadow: 4px 4px 0px #000000;
-    height: 90px;
-    line-height: 90px;
-    user-select: none;
+    font-size: 3.5rem; /* 초대형 타겟 폰트 크기 */
+    font-weight: bold; /* 폰트 굵게 */
+    color: #ff2a6d; /* 형광 핑크 포인트 색상 */
+    text-shadow: 4px 4px 0px #000000; /* 4px 도트 그림자 */
+    height: 90px; /* 높이 고정 */
+    line-height: 90px; /* 수직 중앙 정렬 */
+    user-select: none; /* 드래그로 인한 블록지정 방지 */
 }
 
-.slot-label {
-    position: absolute;
-    bottom: 6px;
-    right: 8px;
-    font-size: 0.5rem;
-    color: #373737;
-}
-
-/* 피드백 애니메이션 */
+/* 피드백 애니메이션 및 동적 클래스 */
 .target-slot.correct {
-    background-color: #2e6f40;
-    box-shadow: inset 4px 4px 0px #1e4a2b, inset -4px -4px 0px #5cdb7d;
+    background-color: #2e6f40; /* 정답시 초록색 전환 */
+    box-shadow: inset 4px 4px 0px #1e4a2b, inset -4px -4px 0px #5cdb7d; /* 정답용 음각 입체 테두리 */
 }
-.target-slot.correct .target-char { color: #5eff8b; }
+.target-slot.correct .target-char { color: #5eff8b; } /* 형광 녹색 문자 색상 */
 
 .target-slot.wrong {
-    background-color: #8f2d2d;
-    box-shadow: inset 4px 4px 0px #5c1b1b, inset -4px -4px 0px #e05e5e;
-    animation: shake 0.2s ease-in-out;
+    background-color: #8f2d2d; /* 오답시 붉은색 전환 */
+    box-shadow: inset 4px 4px 0px #5c1b1b, inset -4px -4px 0px #e05e5e; /* 오답용 음각 입체 테두리 */
+    animation: shake 0.2s ease-in-out; /* 0.2초간 좌우 흔들림 애니메이션 수행 */
 }
-.target-slot.wrong .target-char { color: #ff6b6b; }
+.target-slot.wrong .target-char { color: #ff6b6b; } /* 연붉은색 문자 색상 */
 
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    75% { transform: translateX(8px); }
+    0%, 100% { transform: translateX(0); } /* 원위치 */
+    25% { transform: translateX(-8px); } /* 왼쪽으로 8px 즉각 이동 */
+    75% { transform: translateX(8px); } /* 오른쪽으로 8px 즉각 이동 */
 }
 
-/* 4. 점수 / 타이머 박스: 텍스트 겹침 방지 */
+/* 점수 및 타이머 상태 박스 */
 .status-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 24px;
+    display: flex; /* 상태 상자 가로 정렬 */
+    justify-content: space-between; /* 양끝 정렬 */
+    gap: 12px; /* 상자 간 간격 12px */
+    margin-bottom: 24px; /* 하단 여백 24px */
 }
 
 .mc-box {
-    flex: 1;
-    background-color: #8b8b8b;
-    padding: 12px 6px;
-    font-size: 0.6rem;
-    color: #ffffff;
-    text-shadow: 1px 1px 0px #000000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    border: 3px solid #373737;
-    box-shadow: inset 3px 3px 0px #373737, inset -3px -3px 0px #ffffff;
+    flex: 1; /* 가로 공간 동일 분할 */
+    background-color: #8b8b8b; /* 바탕 회색 */
+    padding: 12px 6px; /* 안쪽 여백 */
+    font-size: 0.6rem; /* 폰트 크기 */
+    color: #ffffff; /* 흰색 글자 */
+    text-shadow: 1px 1px 0px #000000; /* 소형 픽셀 그림자 */
+    display: flex; /* 정렬용 Flexbox */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    gap: 6px; /* 내부 아이템 간격 */
+    border: 3px solid #373737; /* 진회색 테두리 */
+    box-shadow: inset 3px 3px 0px #373737, inset -3px -3px 0px #ffffff; /* 음각 입체감 */
 }
 
 .mc-box .box-text {
-    text-align: center;
-    line-height: 1.5;
+    text-align: center; /* 중앙 정렬 */
+    line-height: 1.5; /* 줄 간격 */
 }
 
+/* [수정 포인트] 원본 의도를 유지하여 스크립트로 들어오는 하이라이트 문자가 연노랑으로 바뀌게 설정했습니다. */
 .mc-box span span {
-    color: #ffff55;
+    color: #ffff55; /* 강조 숫자 연노란색 하이라이트 */
 }
 
-/* 5. 버튼: 글자가 버튼 밖으로 넘치지 않게 크기 조절 */
+/* 하단 버튼 영역 */
 .button-group {
-    display: flex;
-    gap: 12px;
+    display: flex; /* 버튼 가로 정렬 */
+    gap: 12px; /* 버튼 사이 간격 12px */
 }
 
 .mc-btn {
-    flex: 1;
-    padding: 12px 4px;
-    font-size: 0.7rem;
-    color: #ffffff;
-    text-shadow: 2px 2px 0px #000000;
-    cursor: pointer;
-    border: 3px solid #000000;
-    outline: none;
+    flex: 1; /* 버튼 가로비율 1:1 동일 분할 */
+    padding: 12px 4px; /* 패딩 */
+    font-size: 0.7rem; /* 글자 크기 */
+    color: #ffffff; /* 흰색 글자 */
+    text-shadow: 2px 2px 0px #000000; /* 2px 그림자 */
+    cursor: pointer; /* 마우스 포인터 손가락 모양 변경 */
+    border: 3px solid #000000; /* 3px 검은색 테두리 */
+    outline: none; /* 포커스 테두리 제거 */
+    /* [수정 포인트] transition을 부여하면 픽셀 버튼 고유의 '단칼에 눌리는 타격감'이 사라지므로 절대 추가하지 않습니다. */
 }
 
 .mc-btn-green {
-    background-color: #4a7c29;
-    box-shadow: inset 3px 3px 0px #70ab43, inset -3px -3px 0px #274515;
+    background-color: #4a7c29; /* 초록 바탕색 */
+    box-shadow: inset 3px 3px 0px #70ab43, inset -3px -3px 0px #274515; /* 양각 픽셀 버튼 입체감 */
 }
-.mc-btn-green:hover { background-color: #5b9634; color: #ffffa0; }
+.mc-btn-green:hover { background-color: #5b9634; color: #ffffa0; } /* 호버 시 색상 및 글자색 변환 */
 
 .mc-btn-red {
-    background-color: #8f2d2d;
-    box-shadow: inset 3px 3px 0px #b84d4d, inset -3px -3px 0px #541616;
+    background-color: #8f2d2d; /* 붉은 바탕색 */
+    box-shadow: inset 3px 3px 0px #b84d4d, inset -3px -3px 0px #541616; /* 양각 픽셀 버튼 입체감 */
 }
-.mc-btn-red:hover { background-color: #aa3838; color: #ffffa0; }
+.mc-btn-red:hover { background-color: #aa3838; color: #ffffa0; } /* 호버 시 색상 및 글자색 변환 */
 
-.mc-btn:active { transform: translateY(2px); }
-.mc-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(80%); }
+.mc-btn:active { transform: translateY(2px); } /* 클릭 시 즉시 2px 아래로 내려가며 실제로 눌리는 입체 효과 표현 */
+.mc-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(80%); } /* 비활성화 상태 표현 */

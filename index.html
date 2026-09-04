@@ -1,67 +1,68 @@
-<!-- 
-    1. 아래 게임의 문제점을 발견하고,
-   개선점을 제시하세요. 정답은 없습니다. 
-    2. 디자인을 개선해보세요.
-    3. css, javascript 파일을 외부로 빼서 따로 관리하도록 변경해주시고
-    4. repository를 새로 만들어서
-    5. github 페이지에 배포해보세요
-    (index.html이 아니면 파일명까지 다 적어줘야 경로가 됩니다.)
- -->
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typing Game</title>
-    <link rel="stylesheet" href="exam4.css">
-    <script src="exam4.js" defer></script>
-</head>
-<body>
-    <!-- 배경 요소를 위한 레이어 -->
-    <div class="sun"></div>
-    <div class="cloud cloud1"></div>
-    <div class="cloud cloud2"></div>
+<!DOCTYPE html> <!-- HTML5 표준 문서임을 선언 -->
+<html lang="ko"> <!-- 문서의 언어를 한국어(ko)로 설정 -->
 
-    <!-- 메인 게임 카드 -->
-    <main class="game-card">
-        
-        <header class="card-header">
-            <h1>⛏️ Typing Game</h1>
-            <p class="instruction">Type the displayed text! (Case-sensitive)</p>
-        </header>
+<head> <!-- 문서의 메타데이터, 제목, 외부 파일 연결 정보를 담는 헤더 영역 -->
+    <meta charset="UTF-8"> <!-- 문자의 인코딩을 UTF-8로 지정하여 한글 깨짐 방지 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 모바일 기기 등 다양한 화면에 맞게 반응형 스케일 조절 -->
+    
+    <title>Typing Game</title> <!-- 브라우저 탭에 표시될 페이지 제목 -->
+    
+    <link rel="stylesheet" href="exam4.css"> <!-- 외부 CSS 스타일시트(exam4.css) 연결 -->
+    <script src="exam4.js" defer></script> <!-- 자바스크립트 파일(exam4.js) 연결 (defer: HTML 해석 완료 후 실행) -->
+</head> <!-- head 영역 끝 -->
 
-        <!-- 타겟 문자 표시창 -->
-        <section class="target-slot">
-            <div id="targetChar" class="target-char">?</div>
-            <span class="slot-label">TARGET</span>
-        </section>
+<body> <!-- 실제 웹 브라우저 화면에 출력되는 콘텐츠 시작 영역 -->
+    <div class="sun"></div> <!-- 배경에 표시될 '해' 디자인 요소 -->
+    <div class="cloud cloud1"></div> <!-- 배경에 표시될 첫 번째 '구름' 디자인 요소 -->
+    <div class="cloud cloud2"></div> <!-- 배경에 표시될 두 번째 '구름' 디자인 요소 -->
 
-        <!-- 점수 및 타이머 (2줄 정렬 반영) -->
-        <section class="status-container">
-            <div id="score" class="mc-box">
-                <span class="mc-icon">💎</span>
-                <div class="box-text">
+    <main class="game-card"> <!-- 게임의 카드 형태 메인 컨테이너 -->
+        <header class="card-header"> <!-- 상단 헤더 영역 -->
+            <h1>⛏️ Typing Game</h1> <!-- 게임 제목 표시 (마인크래프트풍 곡괭이 이모지 포함) -->
+            
+            <p class="instruction">Type the displayed text! (Case-sensitive)</p> <!-- 게임 설명 문구 (대소문자 구분 안내) -->
+        </header> <!-- header 영역 끝 -->
+
+        <section class="target-slot"> <!-- 사용자가 입력해야 하는 타겟 글자 표시 섹션 -->
+            <div id="targetChar" class="target-char">?</div> <!-- 입력해야 할 글자가 나타나는 영역 (기본값 '?') -->
+        </section> <!-- target-slot 영역 끝 -->
+
+        <section class="status-container"> <!-- 점수판과 타이머를 가로로 나란히 정렬 -->
+            
+            <div id="score" class="mc-box"> <!-- 점수를 표시하는 UI 박스 -->
+                <!-- span은 특정값만 변경가능, 줄바꿈 없이 한줄 안에서 텍스트와 자연스럽게 -->
+                <span class="mc-icon">💎</span> <!-- 다이아몬드 아이콘 -->
+                <div class="box-text"> <!-- 점수 박스 내 텍스트들 -->
                     Score:<br>
-                    <span><span>0</span> / 100</span>
-                </div>
-            </div>
-            <div id="timer" class="mc-box">
-                <span class="mc-icon">⏳</span>
-                <div class="box-text">
-                    Time:<br>
-                    <span><span>20</span>sec</span>
-                </div>
-            </div>
-        </section>
-        
-        <!-- 컨트롤 버튼 -->
-        <nav class="button-group">
-            <button id="startButton" class="mc-btn mc-btn-green">GAME START</button>
-            <button id="resetButton" class="mc-btn mc-btn-red">RESET</button>
-        </nav>
+                    <span><span id="scoreValue">0</span> / 100</span> <!-- 현재 점수(기본값 0)와 목표 점수(100) -->
+                </div> <!-- box-text 영역 끝 -->
+            </div> <!-- score 영역 끝 -->
 
-        <!-- 모바일 키보드 활성화용 숨김 입력창 -->
-        <input type="text" id="mobileInput" style="opacity: 0; position: absolute; pointer-events: none;" />
-    </main>
-</body>
-</html>
+            <div id="timer" class="mc-box"> <!-- 제한시간을 표시하는 UI 박스 -->
+                <span class="mc-icon">⏳</span> <!-- 모래시계 아이콘 -->
+                <div class="box-text"> <!-- 타이머 텍스트 표시 상자 -->
+                    Time:<br>
+                    <span><span id="timerValue">20</span>sec</span> <!-- 남은 시간(기본값 20초) -->
+                </div> <!-- box-text 영역 끝 -->
+            </div> <!-- timer 영역 끝 -->
+        </section> <!-- status-container 영역 끝 -->
+        
+        <div class="button-group"> <!-- 게임 조작 버튼 모음 컨테이너 -->
+            <button type="button" id="startButton" class="mc-btn mc-btn-green">GAME START</button> <!-- 초록색 게임 시작 버튼 -->
+            <button type="button" id="resetButton" class="mc-btn mc-btn-red">RESET</button> <!-- 빨간색 초기화 버튼 -->
+        </div> <!-- button-group 영역 끝 -->
+
+        <!-- 모바일 환경에서 터치 시 가상 키보드를 호출하기 위해 화면 밖으로 숨겨놓은 보이지 않는 입력 요소 -->
+        <input 
+            type="text"  //일반 텍스트 입력창 요소 생성
+            id="mobileInput" // JS에서 사용할 아이디
+            style="position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; border: none; outline: none; pointer-events: none;" 
+            // 절대 좌표로 위치 지정; 상단 좌측 맨 멀리 밖으로 밀어서 시야에서 숨김; 정식입력창 최소 크기인 가로 1px, 세로 1px; 투명도0으로 안보이게; 기본테두리 선제거; 선택시 외곽 강조선 제거; 클릭 불가
+            autocomplete="off" // 자동완성 제거
+            autocorrect="off" // 자동수정 제거
+            autocapitalize="off" //자동 대문자 제거
+            spellcheck="false" //맞춤법 검사 제거
+        />
+    </main> <!-- game-card 영역 끝 -->
+</body> <!-- body 영역 끝 -->
+</html> <!-- html 문서 끝 -->
